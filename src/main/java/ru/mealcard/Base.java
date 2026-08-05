@@ -10,9 +10,9 @@ import ru.mealcard.config.ConfigService;
 public class Base {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected static final ObjectMapper mapper = createMapper();
+    protected static final ObjectMapper objectMapper = createMapper();
 
-    private ObjectMapper createMapper() {
+    private static ObjectMapper createMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule())
                 .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);

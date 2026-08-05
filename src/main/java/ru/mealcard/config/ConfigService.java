@@ -30,6 +30,7 @@ public class ConfigService extends Base {
 
         } catch (IOException e) {
             error("failed load config: {}", e);
+            throw new IllegalStateException("Config load failed", e);
         }
     }
 
