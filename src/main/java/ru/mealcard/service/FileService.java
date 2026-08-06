@@ -23,7 +23,7 @@ public class FileService extends Base {
             Files.createDirectories(output_dir);
             info("directory create");
         } catch (IOException e) {
-            error("cant create directories {}", e, e.getMessage());
+            error("cant create directories {}", e.getMessage(), e);
         }
     }
 

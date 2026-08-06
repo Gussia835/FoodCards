@@ -39,8 +39,9 @@ public class GenerateService extends Base {
     }
 
     private void sheduleFile(FileContent file) {
-        Runnable task = () ->
+        Runnable task = () -> {
             info("Processing file at {}", LocalDateTime.now(ZoneId.of(getConfig().getZone())));
+        };
 
             if (file.getHeader().getProcType() == TypeProcedure.IN_TIME) {
                 shedulerService.shedule(file.getHeader().getSheduledTime(), task);

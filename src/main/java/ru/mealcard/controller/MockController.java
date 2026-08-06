@@ -20,7 +20,7 @@ public class MockController extends Base implements HttpHandler {
 
     private final int count_mock = getConfig().getMockDefaultCount();
 
-    private ExecutorService executorService;
+    private final ExecutorService executorService;
 
     public MockController(ExecutorService executorService) {
         this.executorService = executorService;
