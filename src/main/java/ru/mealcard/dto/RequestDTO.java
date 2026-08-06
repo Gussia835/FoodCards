@@ -10,5 +10,5 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class RequestDTO {
-    List<CardDTO> records;
+    List<CardDTO> cards;
 }

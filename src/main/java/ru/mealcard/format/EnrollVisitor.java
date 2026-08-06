@@ -46,13 +46,13 @@ public class EnrollVisitor implements Visitor {
     @Override
     public String visit(BodyDTO body) {
         String fio = StringUtils.rightPad(StringUtils.truncate(
-                StringUtils.defaultString(body.getFio()), FIO_LEN), FIO_LEN);
+                    body.getFio(), FIO_LEN), FIO_LEN);
         String account = StringUtils.rightPad(
-                StringUtils.truncate(StringUtils.defaultString(body.getAccount()), ACCOUNT_LEN), ACCOUNT_LEN);
+                StringUtils.truncate(body.getAccount(), ACCOUNT_LEN), ACCOUNT_LEN);
         String type = StringUtils.rightPad(StringUtils.truncate(
-                StringUtils.defaultString(body.getType().getCode()), TYPE_LEN), TYPE_LEN);
+                body.getType().getCode(), TYPE_LEN), TYPE_LEN);
         String summ = StringUtils.leftPad(
-                StringUtils.defaultString(String.valueOf(body.getSumm())), SUMM_LEN);
+                String.valueOf(body.getSumm()), SUMM_LEN);
 
 
         return fio + account + type + summ;

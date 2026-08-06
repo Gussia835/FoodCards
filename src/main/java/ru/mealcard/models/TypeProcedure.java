@@ -15,13 +15,12 @@ public enum TypeProcedure {
 
     public static TypeProcedure fromCode(String code) {
         switch (code.toUpperCase()) {
-            case "IMMEDIATE" -> {
-                return IMMEDIATE;
-            }
             case "IN-TIME" -> {
                 return IN_TIME;
             }
-            default -> throw new IllegalArgumentException("Unknown PROC_TYPE");
+            default -> {
+                return IMMEDIATE;
+            }
         }
     }
 
