@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class ResponseDTO {
+    private String status;
     private String filename;
     private String content;
 }
