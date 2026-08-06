@@ -28,13 +28,9 @@ public class Main {
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
+            executor.shutdown();
             return;
         }
         System.out.println("Server started on port " + port);
-
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            executor.shutdown();
-            server.stop(0);
-        }));
     }
 }
