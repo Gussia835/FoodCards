@@ -7,7 +7,7 @@ import ru.mealcard.Base;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
-public class FilenameGenService extends Base {
+public class FilenameService extends Base {
 
     private final String bankCode = StringUtils.leftPad(getConfig().getBankCode(), 3, '0');
     private final String branchCode = StringUtils.leftPad(getConfig().getBranchCode(), 3, '0');
@@ -17,9 +17,9 @@ public class FilenameGenService extends Base {
     private int seq = 1;
 
 
-    @Getter private static final FilenameGenService instance = new FilenameGenService();
+    @Getter private static final FilenameService instance = new FilenameService();
 
-    private FilenameGenService() {
+    private FilenameService() {
     }
 
 
