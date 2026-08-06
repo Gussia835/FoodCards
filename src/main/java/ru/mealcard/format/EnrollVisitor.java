@@ -46,7 +46,7 @@ public class EnrollVisitor implements Visitor {
     @Override
     public String visit(BodyDTO body) {
         String fio = StringUtils.rightPad(StringUtils.truncate(
-                    body.getFio(), FIO_LEN), FIO_LEN);
+                    StringUtils.defaultString(body.getFio()), FIO_LEN), FIO_LEN);
         String account = StringUtils.rightPad(
                 StringUtils.truncate(body.getAccount(), ACCOUNT_LEN), ACCOUNT_LEN);
         String type = StringUtils.rightPad(StringUtils.truncate(

@@ -8,9 +8,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class FileService extends Base {
-    private static final FileService instance = new FileService();
+
     private static final Path output_dir = Path.of(getConfig().getOutputDir());
     private static final String charset = getConfig().getCharset();
+
+    private static final FileService instance = new FileService();
 
     public static FileService getInstance() {
         return instance;
@@ -21,7 +23,7 @@ public class FileService extends Base {
             Files.createDirectories(output_dir);
             info("directory create");
         } catch (IOException e) {
-            error("cant create directories", e, e.getMessage());
+            error("cant create directories {}", e, e.getMessage());
         }
     }
 
