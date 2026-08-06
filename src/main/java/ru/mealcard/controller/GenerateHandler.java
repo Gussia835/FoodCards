@@ -7,19 +7,20 @@ import ru.mealcard.dto.RequestDTO;
 import ru.mealcard.dto.ResponseDTO;
 import ru.mealcard.service.GenerateService;
 import ru.mealcard.service.ResponseService;
-import ru.mealcard.utils.Worker;
 
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class GenerateHandler extends Base implements HttpHandler {
 
     private final GenerateService generateService = GenerateService.getInstance();
     private final ResponseService responses = ResponseService.getInstance();
-    private final Worker worker;
+    private final ExecutorService executorService;
 
-    public GenerateHandler(Worker worker) {
-        this.worker = worker;
+    public GenerateHandler(ExecutorService executorService) {
+        this.executorService = executorService;
     }
 
     @Override
@@ -33,7 +34,7 @@ public class GenerateHandler extends Base implements HttpHandler {
             debug("raw body: {}", body);
 
             RequestDTO request = objectMapper.readValue(body, RequestDTO.class);
-            worker.submit(() -> process(exchange, request));
+            executorService.submit(() -> process(exchange, request));
         } catch (Exception e) {
             error("Handler error: {}", e.getMessage(), e);
             responses.sendError(exchange, HttpURLConnection.HTTP_INTERNAL_ERROR, "Internal server error");
