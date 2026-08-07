@@ -30,10 +30,9 @@ public class GenerateHandler extends Base implements HttpHandler {
                 responses.sendError(exchange, HttpURLConnection.HTTP_BAD_METHOD, "Method not allowed");
                 return;
             }
-            String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-            debug("raw body: {}", body);
 
-            RequestDTO request = objectMapper.readValue(body, RequestDTO.class);
+            RequestDTO request = objectMapper.readValue(exchange.getRequestBody(), RequestDTO.class);
+
             executorService.submit(() -> process(exchange, request));
         } catch (Exception e) {
             error("Handler error: {}", e.getMessage(), e);

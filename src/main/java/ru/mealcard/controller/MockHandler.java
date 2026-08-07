@@ -12,7 +12,7 @@ import ru.mealcard.service.ResponseService;
 import java.net.HttpURLConnection;
 import java.util.concurrent.ExecutorService;
 
-public class MockController extends Base implements HttpHandler {
+public class MockHandler extends Base implements HttpHandler {
 
     private final GenerateService generateService = GenerateService.getInstance();
     private final MockDataService mockDataService = MockDataService.getInstance();
@@ -22,7 +22,7 @@ public class MockController extends Base implements HttpHandler {
 
     private final ExecutorService executorService;
 
-    public MockController(ExecutorService executorService) {
+    public MockHandler(ExecutorService executorService) {
         this.executorService = executorService;
     }
 

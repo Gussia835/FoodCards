@@ -3,7 +3,7 @@ package ru.mealcard;
 import com.sun.net.httpserver.HttpServer;
 import ru.mealcard.config.ConfigService;
 import ru.mealcard.controller.GenerateHandler;
-import ru.mealcard.controller.MockController;
+import ru.mealcard.controller.MockHandler;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -20,7 +20,7 @@ public class Main {
             HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 
             server.createContext("/generate", new GenerateHandler(executor));
-            server.createContext("/mock", new MockController(executor));
+            server.createContext("/mock", new MockHandler(executor));
 
             server.setExecutor(Executors.newSingleThreadExecutor());
 
