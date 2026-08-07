@@ -7,6 +7,7 @@ import ru.mealcard.dto.BodyDTO;
 import ru.mealcard.dto.CardDTO;
 import ru.mealcard.dto.HeaderDTO;
 import ru.mealcard.dto.RequestDTO;
+import ru.mealcard.models.FileContent;
 import ru.mealcard.models.TypeOperation;
 import ru.mealcard.models.TypeProcedure;
 

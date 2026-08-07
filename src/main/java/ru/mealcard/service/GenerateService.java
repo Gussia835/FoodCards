@@ -5,9 +5,9 @@ import ru.mealcard.Base;
 import ru.mealcard.dto.RequestDTO;
 import ru.mealcard.dto.ResponseDTO;
 import ru.mealcard.format.EnrollVisitor;
+import ru.mealcard.models.FileContent;
 import ru.mealcard.models.TypeProcedure;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 

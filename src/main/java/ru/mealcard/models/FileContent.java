@@ -1,4 +1,4 @@
-package ru.mealcard.service;
+package ru.mealcard.models;
 
 import lombok.Getter;
 import ru.mealcard.Base;
