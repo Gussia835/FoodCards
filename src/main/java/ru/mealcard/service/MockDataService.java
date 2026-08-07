@@ -36,7 +36,7 @@ public class MockDataService extends Base {
         CardDTO card = new CardDTO();
 
         card.setFio(faker.name().fullName());
-        card.setAccount(faker.numerify("1################"));
+        card.setAccount(faker.numerify("1###############"));
         card.setType(faker.options().option("DR", "CR", "ZR"));
         card.setSum(faker.number().numberBetween(1, 100_000_000));
 

@@ -22,7 +22,7 @@ public class Main {
             server.createContext("/generate", new GenerateHandler(executor));
             server.createContext("/mock", new MockController(executor));
 
-            server.setExecutor(Executors.newFixedThreadPool(4));
+            server.setExecutor(Executors.newSingleThreadExecutor());
 
             server.start();
 
