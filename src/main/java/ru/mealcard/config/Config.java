@@ -2,7 +2,7 @@ package ru.mealcard.config;
 
 import ru.mealcard.Base;
 
-import java.io.FileInputStream;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -19,8 +19,10 @@ public class ConfigService extends Base {
     private static final String AES_NAME_KEY = "aes-name";
     private static final String MOCK_COUNT_KEY = "mock-count";
 
-    private static final ConfigService instance = new ConfigService();
-    private final Properties properties = new Properties();
+    private static final String writer = "wirter";
+
+    private static final ConfigService INSTANCE = new ConfigService();
+    private static final Properties PROPERTIES = new Properties();
 
 
     private ConfigService() {
@@ -30,7 +32,7 @@ public class ConfigService extends Base {
                 throw new IllegalStateException("not found property file");
             }
 
-            properties.load(inputStream);
+            PROPERTIES.load(inputStream);
             debug("load property-file");
 
         } catch (IOException e) {
@@ -41,15 +43,16 @@ public class ConfigService extends Base {
 
     public static ConfigService getInstance() {
 
-        return instance;
+        return INSTANCE;
     }
 
     private String get(String key) {
-        String value = instance.properties.getProperty(key);
+        String value = PROPERTIES.getProperty(key);
         return value == null ? "" : value.trim();
     }
 
     public int getPort() {
+
         debug("Получаем порт из конфига");
         return Integer.parseInt(get(PORT_KEY));
 
@@ -83,6 +86,10 @@ public class ConfigService extends Base {
 
     public int getMockDefaultCount() {
         return Integer.parseInt(get(MOCK_COUNT_KEY));
+    }
+
+    public BufferedWriter getWriter() {
+        return new BufferedWriter(getOutputDir());
     }
 }
 
