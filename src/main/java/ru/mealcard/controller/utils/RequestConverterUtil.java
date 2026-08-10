@@ -1,12 +1,24 @@
 package ru.mealcard.controller.utils;
 
 import com.sun.net.httpserver.HttpExchange;
+import lombok.Getter;
 import ru.mealcard.Base;
+import ru.mealcard.exception.InvalidRequestException;
 
-public class RequestConverter extends Base {
-    public static <T> T convert(HttpExchange exchange, T clazz) {
-        byte[] bytes = exchange.getRequestBody().readAllBytes();
-        T requestDTO = objectMapper.readValue(bytes, clazz);
-        return requestDTO;
+public class RequestConverterUtil extends Base {
+    @Getter private static final RequestConverterUtil instance = new RequestConverterUtil();
+
+    private RequestConverterUtil() {
+
+    }
+
+    public static <T> T parseBody(HttpExchange exchange, Class<T> clazz) {
+        try {
+            byte[] bytes = exchange.getRequestBody().readAllBytes();
+
+            return objectMapper.readValue(bytes, clazz);
+        } catch (Exception e) {
+            throw new InvalidRequestException(e.getMessage());
+        }
     }
 }

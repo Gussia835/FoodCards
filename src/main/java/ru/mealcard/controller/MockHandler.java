@@ -3,23 +3,22 @@ package ru.mealcard.controller;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import ru.mealcard.Base;
-import ru.mealcard.dto.RequestDTO;
-import ru.mealcard.dto.ResponseDTO;
+import ru.mealcard.controller.utils.RequestConverterUtil;
+import ru.mealcard.dto.MockRequestDTO;
+import ru.mealcard.exception.FileGenerationException;
+import ru.mealcard.exception.InvalidRequestException;
 import ru.mealcard.service.GenerateService;
-import ru.mealcard.service.MockDataService;
+import ru.mealcard.service.MockGenerateService;
 import ru.mealcard.service.ResponseService;
 
 import java.net.HttpURLConnection;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.RejectedExecutionException;
 
 public class MockHandler extends Base implements HttpHandler {
 
-    private final GenerateService generateService = GenerateService.getInstance();
-    private final MockDataService mockDataService = MockDataService.getInstance();
-    private final ResponseService responseService = ResponseService.getInstance();
-
-    private final int count_mock = getConfig().getMockDefaultCount();
-
+    private final MockGenerateService service = MockGenerateService.getInstance();
+    private final ResponseService responses = ResponseService.getInstance();
     private final ExecutorService executorService;
 
     public MockHandler(ExecutorService executorService) {
@@ -28,23 +27,36 @@ public class MockHandler extends Base implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) {
+        if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
+            responses.sendError(exchange, HttpURLConnection.HTTP_BAD_METHOD, "Method not allowed");
+            exchange.close();
+            return;
+        }
+
         try {
-            RequestDTO request = mockDataService.generateRequest(count_mock);
-            executorService.submit(() -> process(exchange, request));
+            executorService.submit(() -> process(exchange));
+        } catch (RejectedExecutionException e) {
+            error("Thread pool rejected task: {}", e.getMessage());
+            responses.sendError(exchange, HttpURLConnection.HTTP_UNAVAILABLE, "Server busy");
+            exchange.close();
+        }
+    }
+
+    private void process(HttpExchange exchange) {
+        try {
+            MockRequestDTO requestDTO = RequestConverterUtil.parseBody(exchange, MockRequestDTO.class);
+            var response = service.process(requestDTO);
+            responses.sendJson(exchange, HttpURLConnection.HTTP_OK, response);
+        } catch (InvalidRequestException e) {
+            responses.sendError(exchange, HttpURLConnection.HTTP_BAD_REQUEST, e.getMessage());
+        } catch (FileGenerationException e) {
+            error("File generation failed: {}", e.getMessage(), e);
+            responses.sendError(exchange, HttpURLConnection.HTTP_INTERNAL_ERROR, "Generation failed");
         } catch (Exception e) {
-            error("Mock error: {}", e.getMessage(), e);
-            responseService.sendError(exchange, HttpURLConnection.HTTP_INTERNAL_ERROR, "Internal exception");
+            error("Unexpected error: {}", e.getMessage(), e);
+            responses.sendError(exchange, HttpURLConnection.HTTP_INTERNAL_ERROR, "Internal server error");
+        } finally {
+            exchange.close();
         }
     }
-
-
-    private void process(HttpExchange exchange, RequestDTO request) {
-        try {
-            ResponseDTO response = generateService.process(request);
-            responseService.sendJson(exchange, HttpURLConnection.HTTP_OK, response);
-        } catch (IllegalArgumentException e) {
-            responseService.sendError(exchange, HttpURLConnection.HTTP_BAD_REQUEST, e.getMessage());
-        }
-    }
-
 }
