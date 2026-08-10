@@ -2,52 +2,60 @@ package ru.mealcard.service;
 
 import lombok.Getter;
 import ru.mealcard.Base;
-import ru.mealcard.dto.RequestDTO;
+import ru.mealcard.dto.DataForEnrollDTO;
+import ru.mealcard.dto.GenerateRequestDTO;
 import ru.mealcard.dto.ResponseDTO;
 import ru.mealcard.format.EnrollVisitor;
-import ru.mealcard.models.FileContent;
+import ru.mealcard.format.Visitor;
 import ru.mealcard.models.TypeProcedure;
 
-import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class GenerateService extends Base {
-    private final RequestConverterService converter = RequestConverterService.getInstance();
-    private final FilenameService filenameService = FilenameService.getInstance();
-    private final FileService fileService = FileService.getInstance();
-    private final ShedulerService shedulerService = ShedulerService.getInstance();
 
-    private final EnrollVisitor enrollVisitor = new EnrollVisitor();
+    private final FileGeneratorService fileGenerator = FileGeneratorService.getInstance();
+    private final RequestValidator validator = RequestValidator.getInstance();
 
-    @Getter private static final GenerateService instance = new GenerateService();
+    private final Visitor<DataForEnrollDTO> visitor = new EnrollVisitor();
+
+    @Getter
+    private static final GenerateService instance = new GenerateService();
 
     private GenerateService() {}
 
-    public ResponseDTO process(RequestDTO request) {
-        FileContent file = converter.convert(request);
-        String content = file.render(enrollVisitor);
-        String filename = filenameService.generate();
-        fileService.save(filename, content);
-        sheduleFile(file);
+    public ResponseDTO process(GenerateRequestDTO requestDTO) {
+        validator.validateGenerate(requestDTO);
+
+        DataForEnrollDTO data = convertToDataForEnroll(requestDTO);
+
+        String filename = fileGenerator.generate(
+                data,
+                visitor,
+                requestDTO.getBankCode(),
+                requestDTO.getBranchCode(),
+                requestDTO.getNameSystem()
+        );
 
         ResponseDTO response = new ResponseDTO();
         response.setStatus("SUCCESS");
         response.setFilename(filename);
-        response.setContent(content);
-
         return response;
     }
 
-    private void sheduleFile(FileContent file) {
-        Runnable task = () -> {
-            info("Processing file at {}", LocalDateTime.now(ZoneId.of(getConfig().getZone())));
-        };
+    private DataForEnrollDTO convertToDataForEnroll(GenerateRequestDTO request) {
+        TypeProcedure proc = TypeProcedure.fromCode(request.getProcType());
+        ZonedDateTime scheduled = null;
+        if (proc == TypeProcedure.IN_TIME && request.getProcessAt() != null) {
+            scheduled = ZonedDateTime.parse(request.getProcessAt())
+                    .withZoneSameInstant(ZoneId.of(getConfig().getZone()));
+        }
 
-            if (file.getHeader().getProcType() == TypeProcedure.IN_TIME) {
-                shedulerService.shedule(file.getHeader().getSheduledTime(), task);
-            } else {
-                task.run();
-            }
-
+        return new DataForEnrollDTO(
+                ZonedDateTime.now(ZoneId.of(getConfig().getZone())),
+                scheduled,
+                proc,
+                request.getCards()
+        );
     }
 }

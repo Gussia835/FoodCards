@@ -1,6 +1,5 @@
 package ru.mealcard.service;
 
-import lombok.Getter;
 import ru.mealcard.Base;
 
 import java.time.Duration;
@@ -12,23 +11,26 @@ import java.util.concurrent.TimeUnit;
 
 public class ShedulerService extends Base {
 
-    private final ScheduledExecutorService sheduler = Executors.newScheduledThreadPool(1);
-    @Getter
     private static final ShedulerService instance = new ShedulerService();
+    public static ShedulerService getInstance() { return instance; }
+
+    // 5 потоков — IN-TIME задачи не блокируют друг друга
+    private final ScheduledExecutorService sheduler = Executors.newScheduledThreadPool(5);
 
     private ShedulerService() {
+        info("ShedulerService initialized with 5 threads");
     }
 
     public void shedule(LocalDateTime sheduledTime, Runnable task) {
-        long diff = Duration.between(LocalDateTime.now(ZoneId.of(getConfig().getZone())), sheduledTime).toMillis();
+        long diff = Duration.between(
+                LocalDateTime.now(ZoneId.of(getConfig().getZone())),
+                sheduledTime).toMillis();
 
         if (diff > 0) {
             sheduler.schedule(task, diff, TimeUnit.MILLISECONDS);
+            info("Task sheduled for {} (delay {} ms)", sheduledTime, diff);
         } else {
             task.run();
         }
     }
-
-
-
 }

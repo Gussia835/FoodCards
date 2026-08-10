@@ -1,40 +1,60 @@
 package ru.mealcard.service;
 
 import ru.mealcard.Base;
+import ru.mealcard.dto.DataForEnrollDTO;
+import ru.mealcard.exception.FileGenerationException;
+import ru.mealcard.format.Visitor;
+import ru.mealcard.models.TypeProcedure;
+import ru.mealcard.utils.FilenameGeneratorUtil;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class FileService extends Base {
+public class FileGeneratorService extends Base {
 
-    private static final Path output_dir = Path.of(getConfig().getOutputDir());
-    private static final String charset = getConfig().getCharset();
+    private final ShedulerService scheduler = ShedulerService.getInstance();
+    private final FilenameGeneratorUtil filenameGenerator = FilenameGeneratorUtil.getInstance();
 
-    private static final FileService instance = new FileService();
+    private static final FileGeneratorService instance = new FileGeneratorService();
 
-    public static FileService getInstance() {
+    public static FileGeneratorService getInstance() {
         return instance;
     }
 
-    private FileService() {
+    private FileGeneratorService() {
         try {
-            Files.createDirectories(output_dir);
+            Files.createDirectories(getConfig().getOutputDir());
             info("directory create");
         } catch (IOException e) {
             error("cant create directories {}", e.getMessage(), e);
+            throw new FileGenerationException("error during generation file " + e.getMessage());
         }
     }
 
-    public void save(String filename, String content) {
-        try {
-            Files.write(output_dir.resolve(filename),
-                        content.getBytes(Charset.forName(charset)));
-            info("file created {}", filename);
-        } catch (IOException e) {
-            error("cant create file with content", e.getMessage(), e);
-            throw new IllegalStateException("File saved error", e);
+    public <T> String generate(T data, Visitor<T> visitor, String bankCode,
+                                   String branchCode, String nameSystem) {
+        String filename = filenameGenerator.generate(bankCode, branchCode, nameSystem);
+        Path output = getConfig().getOutputDir().resolve(filename);
+
+        visitor.visit(output, data);
+        info("file created {}", filename);
+
+        if (data instanceof DataForEnrollDTO dto) {
+            shedule(dto, filename);
+        }
+
+        return filename;
+
+    }
+
+    private void shedule(DataForEnrollDTO data, String filename) {
+        if (data.getProcType() == TypeProcedure.IN_TIME && data.getScheduledDateTime() != null) {
+            scheduler.shedule(
+                    data.getScheduledDateTime().toLocalDateTime(),
+                    () -> info("IN-TIME processed: {}", filename)
+            );
         }
     }
 }

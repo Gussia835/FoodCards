@@ -1,4 +1,60 @@
 package ru.mealcard.service;
 
-public class MockGenerateService {
+import lombok.Getter;
+import ru.mealcard.Base;
+import ru.mealcard.dto.DataForEnrollDTO;
+import ru.mealcard.dto.MockRequestDTO;
+import ru.mealcard.dto.ResponseDTO;
+import ru.mealcard.format.EnrollVisitor;
+import ru.mealcard.format.Visitor;
+import ru.mealcard.models.TypeProcedure;
+
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MockGenerateService extends Base {
+
+    @Getter
+    private static final MockGenerateService instance = new MockGenerateService();
+
+    private final RequestValidator validator = RequestValidator.getInstance();
+    private final FileGeneratorService fileGenerator = FileGeneratorService.getInstance();
+    private final MockDataService mockData = MockDataService.getInstance();
+    private final Visitor<DataForEnrollDTO> visitor = new EnrollVisitor();
+
+    private MockGenerateService() {}
+
+    public ResponseDTO process(MockRequestDTO request) {
+        validator.validateMock(request);
+
+        List<String> filenames = new ArrayList<>();
+        for (int i = 0; i < request.getFileCount(); i++) {
+            DataForEnrollDTO data = convertToDataForEnroll(request);
+
+            String filename = fileGenerator.generate(
+                    data,
+                    visitor,
+                    request.getBankCode(),
+                    request.getBranchCode(),
+                    request.getNameSystem()
+            );
+            filenames.add(filename);
+        }
+
+        ResponseDTO response = new ResponseDTO();
+        response.setStatus("SUCCESS");
+        response.setFilenames(filenames);
+        return response;
+    }
+
+    private DataForEnrollDTO convertToDataForEnroll(MockRequestDTO requestDTO) {
+        return new DataForEnrollDTO(
+                ZonedDateTime.now(ZoneId.of(getConfig().getZone())),
+                null,
+                TypeProcedure.IMMEDIATE,
+                mockData.generateRecords(requestDTO.getRowCount())
+        );
+    }
 }
