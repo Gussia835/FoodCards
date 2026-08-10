@@ -5,28 +5,20 @@ import ru.mealcard.Base;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.Properties;
 
-public class ConfigService extends Base {
-    private static final String FILE_PROPERTY =  "/app.properties";
-    private static final String PORT_KEY = "port";
-    private static final String OUTPUT_DIR_KEY = "output-dir";
-    private static final String ZONE_KEY = "zone";
-    private static final String CHARSET_KEY = "charset";
+public class Config extends Base {
 
-    private static final String BANK_CODE_KEY = "bank-code";
-    private static final String BRANCH_CODE_KEY = "branch-code";
-    private static final String AES_NAME_KEY = "aes-name";
-    private static final String MOCK_COUNT_KEY = "mock-count";
-
-    private static final String writer = "wirter";
-
-    private static final ConfigService INSTANCE = new ConfigService();
     private static final Properties PROPERTIES = new Properties();
 
+    private static final Config INSTANCE = new Config();
 
-    private ConfigService() {
-        try (InputStream inputStream = ConfigService.class.getResourceAsStream(FILE_PROPERTY)) {
+
+
+    private Config() {
+        try (InputStream inputStream = Config.class.getResourceAsStream(PropertyKeys.FILE_PROPERTY)) {
             if (inputStream == null) {
                 error("failed founding property-file");
                 throw new IllegalStateException("not found property file");
@@ -41,55 +33,38 @@ public class ConfigService extends Base {
         }
     }
 
-    public static ConfigService getInstance() {
+    public static Config getInstance() {
 
         return INSTANCE;
     }
 
-    private String get(String key) {
-        String value = PROPERTIES.getProperty(key);
-        return value == null ? "" : value.trim();
+    private String get(String key, String def) {
+        return (String) PROPERTIES.getOrDefault(key, def);
     }
 
     public int getPort() {
-
         debug("Получаем порт из конфига");
-        return Integer.parseInt(get(PORT_KEY));
+        return Integer.parseInt(get(PropertyKeys.PORT_KEY, "8081"));
 
     }
 
     public String getZone() {
         debug("getting zone from config");
-        return get(ZONE_KEY);
+        return get(PropertyKeys.ZONE_KEY, "Europe/Moscow");
     }
 
-    public String getCharset() {
+    public Charset getCharset() {
         debug("charset from config");
-        return get(CHARSET_KEY);
+        return Charset.forName(get(PropertyKeys.CHARSET_KEY, "UTF-8"));
     }
 
-    public String getOutputDir() {
+    public Path getOutputDir() {
         debug("getting output dir from config");
-        return get(OUTPUT_DIR_KEY);
+        return Path.of(get(PropertyKeys.OUTPUT_DIR_KEY, "./out/cards"));
     }
 
-    public String getBankCode() {
-        return get(BANK_CODE_KEY);
-    }
-    public String getBranchCode() {
-        return get(BRANCH_CODE_KEY);
-    }
-    public String getAesName() {
-
-        return get(AES_NAME_KEY);
-    }
-
-    public int getMockDefaultCount() {
-        return Integer.parseInt(get(MOCK_COUNT_KEY));
-    }
-
-    public BufferedWriter getWriter() {
-        return new BufferedWriter(getOutputDir());
+    public int getPoolSize() {
+        return Integer.parseInt(get(PropertyKeys.POOL_SIZE_KEY, "2"));
     }
 }
 
