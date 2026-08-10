@@ -3,14 +3,16 @@ package ru.mealcard;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import net.datafaker.Faker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.mealcard.config.ConfigService;
+import ru.mealcard.config.Config;
 
 public class Base {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     protected static final ObjectMapper objectMapper = createMapper();
+    protected static final Faker faker = new Faker();
 
     private static ObjectMapper createMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -20,8 +22,8 @@ public class Base {
         return objectMapper;
     }
 
-    protected static ConfigService getConfig() {
-        return ConfigService.getInstance();
+    protected static Config getConfig() {
+        return Config.getInstance();
     }
 
     protected void error(String text, Object... args) {

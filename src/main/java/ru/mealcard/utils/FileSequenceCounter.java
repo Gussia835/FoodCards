@@ -1,4 +1,6 @@
 package ru.mealcard.utils;
 
-public class FileSequenceCounter {
+import ru.mealcard.Base;
+
+public class FileSequenceCounter extends Base {
 }
