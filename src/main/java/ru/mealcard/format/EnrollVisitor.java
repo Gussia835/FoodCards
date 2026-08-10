@@ -1,67 +1,90 @@
 package ru.mealcard.format;
 
 import org.apache.commons.lang3.StringUtils;
-import ru.mealcard.dto.BodyDTO;
-import ru.mealcard.dto.HeaderDTO;
-import ru.mealcard.dto.TrailerDTO;
+import ru.mealcard.Base;
+import ru.mealcard.dto.DataForEnrollDTO;
+import ru.mealcard.dto.EnrollDTO;
+import ru.mealcard.exception.FileGenerationException;
 import ru.mealcard.models.TypeProcedure;
 
-import java.time.LocalDateTime;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.format.DateTimeFormatter;
 
-public class EnrollVisitor implements Visitor {
-    private final DateTimeFormatter YYYYMMDD = DateTimeFormatter.ofPattern("yyyyMMdd");
-    private final DateTimeFormatter HHMMSS = DateTimeFormatter.ofPattern("HHmmss");
+public class EnrollVisitor extends Base implements Visitor<DataForEnrollDTO> {
 
-    private static final int HEADER_LEN = 42;
+    private static final DateTimeFormatter YYYYMMDD = DateTimeFormatter.ofPattern("yyyyMMdd");
+    private static final DateTimeFormatter HHMMSS = DateTimeFormatter.ofPattern("HHmmss");
+    private static final String CRLF = "\r\n";
+
     private static final int FIO_LEN = 100;
     private static final int ACCOUNT_LEN = 30;
     private static final int SUMM_LEN = 20;
     private static final int TYPE_LEN = 2;
 
     @Override
-    public String visit(HeaderDTO header) {
-        StringBuilder sb = new StringBuilder(HEADER_LEN);
-        sb.append("H ")
-                .append(header.getSendAt().format(YYYYMMDD))
-                .append(" ")
-                .append(header.getSendAt().format(HHMMSS))
-                .append(" ")
-                .append(StringUtils.rightPad(header.getProcType().getCode(), 9));
+    public void visit(Path targetFile, DataForEnrollDTO dto) {
+        info("Writing ENROLL file: {}", targetFile.getFileName());
 
-        if (header.getProcType() == TypeProcedure.IN_TIME &&
-                header.getSheduledTime() != null) {
-            sb.append(header.getSheduledTime().format(YYYYMMDD))
-                    .append(" ")
-                    .append(header.getSheduledTime().format(HHMMSS));
-        } else {
-            sb.append(StringUtils.repeat(" ", 8))
-                    .append(" ")
-                    .append(StringUtils.rightPad(" ", 6));
+        int recordCount = 0;
+        try (BufferedWriter writer = Files.newBufferedWriter(targetFile, getConfig().getCharset())) {
+            writeHeader(writer, dto);
+
+            for (EnrollDTO record : dto.getRecords()) {
+                writeRecord(writer, record);
+                recordCount++;  // Считаем во время итерации
+            }
+
+            writeTrailer(writer, recordCount);
+            info("File {} written successfully ({} records)", targetFile.getFileName(), recordCount);
+        } catch (IOException e) {
+            throw new FileGenerationException("Error writing file " + targetFile);
         }
-
-        return StringUtils.rightPad(sb.toString(), HEADER_LEN);
     }
 
-    @Override
-    public String visit(BodyDTO body) {
-        String fio = StringUtils.rightPad(StringUtils.truncate(
-                    StringUtils.defaultString(body.getFio()), FIO_LEN), FIO_LEN);
+    private void writeHeader(BufferedWriter writer, DataForEnrollDTO dto) throws IOException {
+        TypeProcedure procType = dto.getProcType();
+
+        writer.write("H ");
+        writer.write(dto.getSendAt().format(YYYYMMDD));
+        writer.write(' ');
+        writer.write(dto.getSendAt().format(HHMMSS));
+        writer.write(' ');
+        writer.write(StringUtils.rightPad(procType.getCode(), 9));
+
+        if (procType == TypeProcedure.IN_TIME && dto.getScheduledDateTime() != null) {
+            writer.write(dto.getScheduledDateTime().format(YYYYMMDD));
+            writer.write(' ');
+            writer.write(dto.getScheduledDateTime().format(HHMMSS));
+        } else {
+            writer.write(StringUtils.repeat(' ', 8));
+            writer.write(' ');
+            writer.write(StringUtils.repeat(' ', 6));
+        }
+        writer.write(CRLF);
+    }
+
+    private void writeRecord(BufferedWriter writer, EnrollDTO card) throws IOException {
+        String fio = StringUtils.rightPad(
+                StringUtils.truncate(StringUtils.defaultString(card.getFio()), FIO_LEN), FIO_LEN);
         String account = StringUtils.rightPad(
-                StringUtils.truncate(body.getAccount(), ACCOUNT_LEN), ACCOUNT_LEN);
-        String type = StringUtils.rightPad(StringUtils.truncate(
-                body.getType().getCode(), TYPE_LEN), TYPE_LEN);
-        String summ = StringUtils.leftPad(
-                String.valueOf(body.getSumm()), SUMM_LEN);
+                StringUtils.truncate(card.getAccount(), ACCOUNT_LEN), ACCOUNT_LEN);
+        String type = StringUtils.rightPad(card.getType().getCode(), TYPE_LEN);
+        String summ = StringUtils.leftPad(String.valueOf(card.getSumm()), SUMM_LEN);
 
-
-        return fio + account + type + summ;
+        writer.write(fio);
+        writer.write(account);
+        writer.write(type);
+        writer.write(summ);
+        writer.write(CRLF);
     }
 
-    @Override
-    public String visit(TrailerDTO trailer) {
-        return StringUtils.join("T",
-                                StringUtils.repeat(' ', 9),
-                                StringUtils.leftPad(String.valueOf(trailer.getCount()), 10));
+    private void writeTrailer(BufferedWriter writer, int count) throws IOException {
+        writer.write("T");
+        writer.write(StringUtils.repeat(' ', 9));
+        writer.write(StringUtils.leftPad(String.valueOf(count), 10));
+        writer.write(CRLF);
     }
 }
