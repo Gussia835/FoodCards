@@ -1,0 +1,21 @@
+package ru.mealcard.dto;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class GenerateRequestDTO {
+    private String bankCode;
+    private String branchCode;
+    private String nameSystem;
+    private String procType;
+    private String processAt;
+    private List<EnrollDTO> cards;
+}

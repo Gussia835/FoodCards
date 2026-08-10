@@ -9,10 +9,6 @@ import java.time.ZoneId;
 
 public class FilenameService extends Base {
 
-    private final String bankCode = StringUtils.leftPad(getConfig().getBankCode(), 3, '0');
-    private final String branchCode = StringUtils.leftPad(getConfig().getBranchCode(), 3, '0');
-    private final String aesName = getConfig().getAesName();
-
     private LocalDate currentDay = LocalDate.now(ZoneId.of(getConfig().getZone()));
     private int seq = 1;
 

@@ -13,5 +13,5 @@ import java.util.List;
 public class ResponseDTO {
     private String status;
     private String filename;
-    private String content;
+    private List<String> filenames;
 }
