@@ -8,12 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 public class ConfigServiceTest {
     @Test
     void singletoneTest() {
-        assertSame(ConfigService.getInstance(), ConfigService.getInstance());
+        assertSame(Config.getInstance(), Config.getInstance());
     }
 
     @Test
     void readProperties() {
-        ConfigService config = ConfigService.getInstance();
+        Config config = Config.getInstance();
 
         assertEquals(8080, config.getPort());
         assertEquals("Europe/Moscow", config.getZone());
