@@ -33,10 +33,10 @@ public class RequestValidator extends Base {
 
         validateCommonFields(req.getBankCode(), req.getBranchCode(), req.getNameSystem());
 
-        if (req.getRowCount() < 0) {
+        if (req.getRowCount() <= 0) {
             throw new InvalidRequestException("rowCount must be >= 1");
         }
-        if (req.getFileCount() < 0) {
+        if (req.getFileCount() <= 0) {
             throw new InvalidRequestException("fileCount must be >= 1");
         }
     }

@@ -34,10 +34,10 @@ public class MockDataService extends Base {
                 currentIndex++;
 
                 String fio = faker.name().fullName();
-                String account = "1000" + faker.number().digits(12);
+                String account = faker.number().digits(16);
                 TypeOperation type = TypeOperation.fromCode(
                         faker.options().option("DR", "CR", "ZR"));
-                int sum = faker.number().numberBetween(100, 50000);
+                int sum = faker.number().numberBetween(100, 100000);
 
                 return new EnrollDTO(fio, account, type, sum);
             }

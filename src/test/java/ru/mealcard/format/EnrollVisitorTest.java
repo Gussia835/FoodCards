@@ -1,45 +1,92 @@
-//package ru.mealcard.format;
-//
-//import org.junit.jupiter.api.Test;
-//import ru.mealcard.models.TypeOperation;
-//import ru.mealcard.models.TypeProcedure;
-//
-//import java.time.LocalDateTime;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//
-//public class EnrollVisitorTest {
-//    private final Visitor visitor = new EnrollVisitor();
-//
-//    @Test
-//    void HeaderVisitorTest() {
-//        HeaderDTO headerDTO = new HeaderDTO(null, TypeProcedure.IMMEDIATE,
-//                LocalDateTime.of(2026, 8, 6, 12, 30, 45));
-//
-//        String result = visitor.visit(headerDTO);
-//        assertEquals(42, result.length());
-//        assertTrue(result.startsWith("H 20260806 123045 IMMEDIATE"));
-//    }
-//
-//    @Test
-//    void BodyVisitorTest() {
-//        BodyDTO bodyDTO = new BodyDTO("Иванов", "1000401000050000",
-//                                    TypeOperation.DR, 11);
-//        String result = visitor.visit(bodyDTO);
-//
-//        assertEquals(152, result.length());
-//        assertEquals("DR", result.substring(130, 132), "TYPE must be at 131-132");
-//        assertEquals("11", result.substring(132).trim(), "SUMM must be at 133-152");
-//    }
-//
-//    @Test
-//    void trailerLengthMustBe20() {
-//        TrailerDTO trailerDTO = new TrailerDTO(5);
-//        String result = visitor.visit(trailerDTO);
-//
-//        assertEquals(20, result.length());
-//        assertTrue(result.startsWith("T"));
-//        assertTrue(result.endsWith("5"));
-//    }
-//}
-//
+package ru.mealcard.format;
+
+import net.datafaker.Faker;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import ru.mealcard.exception.FileGenerationException;
+import ru.mealcard.format.dto.DataForEnrollDTO;
+import ru.mealcard.format.dto.EnrollDTO;
+import ru.mealcard.models.TypeOperation;
+import ru.mealcard.models.TypeProcedure;
+import ru.mealcard.service.mock.MockDataService;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class EnrollVisitorTest {
+
+    @TempDir
+    Path tempDir;
+
+    private final EnrollVisitor visitor = new EnrollVisitor();
+    private final MockDataService mockData = MockDataService.getInstance();
+
+    private final Faker faker = new Faker();
+
+    private ZonedDateTime sendAt;
+
+    @BeforeEach
+    void setUp() {
+        sendAt = ZonedDateTime.of(2026, 8, 11, 10, 0, 0, 0, ZoneId.of("Europe/Moscow"));
+    }
+
+    private DataForEnrollDTO data(TypeProcedure proc, ZonedDateTime scheduled, Iterable<EnrollDTO> records) {
+        return new DataForEnrollDTO(sendAt, scheduled, proc, records);
+    }
+
+    private EnrollDTO record(String fio, TypeOperation op, int summ) {
+        return new EnrollDTO(fio, "1" + faker.number().digits(15), op, summ);
+    }
+
+    private String[] lines(Path file) throws Exception {
+        String content = Files.readString(file);
+        assertTrue(content.endsWith("\r\n"));
+        return content.split("\r\n", -1);
+    }
+
+    @Test
+    void testFixedWidthLines() throws Exception {
+        Path file = tempDir.resolve("test.txt");
+
+        visitor.visit(file, data(TypeProcedure.IMMEDIATE, null,
+                List.of(record(faker.name().fullName(),
+                                faker.options().option(TypeOperation.CR, TypeOperation.DR, TypeOperation.ZR),
+                                100),
+                        record(faker.name().fullName(),
+                                faker.options().option(TypeOperation.CR, TypeOperation.DR, TypeOperation.ZR),
+                                faker.number().numberBetween(10, 100_000)))));
+
+        String[] lines = lines(file);
+        assertEquals(42, lines[0].length());
+        assertEquals(152, lines[1].length());
+        assertEquals(152, lines[2].length());
+        assertEquals(20, lines[3].length());
+        assertTrue(lines[0].startsWith("H "));
+        assertTrue(lines[3].startsWith("T"));
+        assertTrue(lines[3].endsWith("2"));
+    }
+
+    @Test
+    void testLongFioTruncatedTo100() throws Exception {
+        Path file = tempDir.resolve("trunc.txt");
+        visitor.visit(file, data(TypeProcedure.IMMEDIATE, null,
+                List.of(record("Ф".repeat(150), TypeOperation.DR, 5))));
+        assertEquals(152, lines(file)[1].length());
+    }
+
+    @Test
+    void testVisitToInvalidPathThrows() {
+        Path file = tempDir.resolve("no-such-dir/file.txt");
+        assertThrows(FileGenerationException.class,
+                () -> visitor.visit(file, data(TypeProcedure.IMMEDIATE, null, List.of())));
+    }
+
+}

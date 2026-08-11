@@ -14,17 +14,17 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MockGenerateService extends Base {
+public class MockService extends Base {
 
     @Getter
-    private static final MockGenerateService instance = new MockGenerateService();
+    private static final MockService instance = new MockService();
 
     private final RequestValidator validator = RequestValidator.getInstance();
     private final FileGeneratorService fileGenerator = FileGeneratorService.getInstance();
     private final MockDataService mockData = MockDataService.getInstance();
     private final Visitor<DataForEnrollDTO> visitor = new EnrollVisitor();
 
-    private MockGenerateService() {}
+    private MockService() {}
 
     public ResponseDTO process(MockRequestDTO request) {
         validator.validateMock(request);
