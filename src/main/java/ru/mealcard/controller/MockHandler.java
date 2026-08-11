@@ -4,11 +4,10 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import ru.mealcard.Base;
 import ru.mealcard.controller.utils.RequestConverterUtil;
-import ru.mealcard.dto.MockRequestDTO;
+import ru.mealcard.controller.dto.MockRequestDTO;
 import ru.mealcard.exception.FileGenerationException;
 import ru.mealcard.exception.InvalidRequestException;
-import ru.mealcard.service.GenerateService;
-import ru.mealcard.service.MockGenerateService;
+import ru.mealcard.service.mock.MockService;
 import ru.mealcard.service.ResponseService;
 
 import java.net.HttpURLConnection;
@@ -17,7 +16,7 @@ import java.util.concurrent.RejectedExecutionException;
 
 public class MockHandler extends Base implements HttpHandler {
 
-    private final MockGenerateService service = MockGenerateService.getInstance();
+    private final MockService service = MockService.getInstance();
     private final ResponseService responses = ResponseService.getInstance();
     private final ExecutorService executorService;
 

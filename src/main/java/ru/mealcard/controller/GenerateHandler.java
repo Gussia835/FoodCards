@@ -4,10 +4,8 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import ru.mealcard.Base;
 import ru.mealcard.controller.utils.RequestConverterUtil;
-import ru.mealcard.dto.GenerateRequestDTO;
-import ru.mealcard.exception.FileGenerationException;
-import ru.mealcard.exception.InvalidRequestException;
-import ru.mealcard.service.GenerateService;
+import ru.mealcard.controller.dto.GenerateRequestDTO;
+import ru.mealcard.service.generate.GenerateService;
 import ru.mealcard.service.ResponseService;
 
 import java.net.HttpURLConnection;

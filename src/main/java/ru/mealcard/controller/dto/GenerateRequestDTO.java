@@ -1,4 +1,4 @@
-package ru.mealcard.dto;
+package ru.mealcard.controller.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

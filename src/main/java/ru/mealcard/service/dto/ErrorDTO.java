@@ -1,4 +1,4 @@
-package ru.mealcard.dto;
+package ru.mealcard.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

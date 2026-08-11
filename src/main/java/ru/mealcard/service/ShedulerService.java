@@ -14,7 +14,6 @@ public class ShedulerService extends Base {
     private static final ShedulerService instance = new ShedulerService();
     public static ShedulerService getInstance() { return instance; }
 
-    // 5 потоков — IN-TIME задачи не блокируют друг друга
     private final ScheduledExecutorService sheduler = Executors.newScheduledThreadPool(5);
 
     private ShedulerService() {

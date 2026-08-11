@@ -1,14 +1,10 @@
-package ru.mealcard.dto;
+package ru.mealcard.format.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import ru.mealcard.models.TypeProcedure;
 
-import java.nio.file.Path;
 import java.time.ZonedDateTime;
-import java.util.Iterator;
-import java.util.List;
 
 @Getter
 @AllArgsConstructor

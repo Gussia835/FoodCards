@@ -1,4 +1,4 @@
-package ru.mealcard.utils;
+package ru.mealcard.service.utils;
 
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;

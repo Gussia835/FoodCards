@@ -1,13 +1,11 @@
-package ru.mealcard.service;
+package ru.mealcard.service.mock;
 
 import lombok.Getter;
-import net.datafaker.Faker;
 import ru.mealcard.Base;
-import ru.mealcard.dto.EnrollDTO;
+import ru.mealcard.format.dto.EnrollDTO;
 import ru.mealcard.models.TypeOperation;
 
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.NoSuchElementException;
 
 public class MockDataService extends Base {

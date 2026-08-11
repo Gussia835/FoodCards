@@ -1,4 +1,4 @@
-package ru.mealcard.dto;
+package ru.mealcard.format.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

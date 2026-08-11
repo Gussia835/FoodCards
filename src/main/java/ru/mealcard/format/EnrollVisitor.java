@@ -2,8 +2,8 @@ package ru.mealcard.format;
 
 import org.apache.commons.lang3.StringUtils;
 import ru.mealcard.Base;
-import ru.mealcard.dto.DataForEnrollDTO;
-import ru.mealcard.dto.EnrollDTO;
+import ru.mealcard.format.dto.DataForEnrollDTO;
+import ru.mealcard.format.dto.EnrollDTO;
 import ru.mealcard.exception.FileGenerationException;
 import ru.mealcard.models.TypeProcedure;
 
@@ -34,7 +34,7 @@ public class EnrollVisitor extends Base implements Visitor<DataForEnrollDTO> {
 
             for (EnrollDTO record : dto.getRecords()) {
                 writeRecord(writer, record);
-                recordCount++;  // Считаем во время итерации
+                recordCount++;
             }
 
             writeTrailer(writer, recordCount);

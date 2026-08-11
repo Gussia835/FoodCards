@@ -1,11 +1,11 @@
-package ru.mealcard.service;
+package ru.mealcard.service.utils;
 
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import ru.mealcard.Base;
-import ru.mealcard.dto.EnrollDTO;
-import ru.mealcard.dto.GenerateRequestDTO;
-import ru.mealcard.dto.MockRequestDTO;
+import ru.mealcard.format.dto.EnrollDTO;
+import ru.mealcard.controller.dto.GenerateRequestDTO;
+import ru.mealcard.controller.dto.MockRequestDTO;
 import ru.mealcard.exception.InvalidRequestException;
 import ru.mealcard.models.TypeProcedure;
 
