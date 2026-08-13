@@ -11,9 +11,9 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class StarterServer {
+public class App {
 
-    private static final Logger logger = LoggerFactory.getLogger(StarterServer.class);
+    private static final Logger logger = LoggerFactory.getLogger(App.class);
 
     private static HttpServer server;
     private static ExecutorService executor;
@@ -22,6 +22,7 @@ public class StarterServer {
         Config config = Config.getInstance();
         executor = Executors.newFixedThreadPool(config.getPoolSize());
 
+        
         try {
             server = HttpServer.create(new InetSocketAddress(config.getPort()), 0);
             server.createContext("/generate", new GenerateHandler(executor));
@@ -34,7 +35,7 @@ public class StarterServer {
             throw new IllegalStateException("Server start failed", e);
         }
 
-        Runtime.getRuntime().addShutdownHook(new Thread(StarterServer::stop));
+        Runtime.getRuntime().addShutdownHook(new Thread(App::stop));
         logger.info("Server started on port {}", config.getPort());
     }
 

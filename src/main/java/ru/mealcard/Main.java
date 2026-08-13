@@ -1,10 +1,12 @@
 package ru.mealcard;
 
-import ru.mealcard.config.StarterServer;
+import ru.mealcard.config.App;
 
 
 public class Main {
     public static void main(String[] args) {
-        StarterServer.start();
+        long pid = ProcessHandle.current().pid();
+        System.out.println("pid: " + pid);
+        App.start();
     }
 }

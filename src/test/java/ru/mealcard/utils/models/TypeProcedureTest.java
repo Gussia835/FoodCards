@@ -2,6 +2,7 @@ package ru.mealcard.models;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import ru.mealcard.utils.models.TypeProcedure;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

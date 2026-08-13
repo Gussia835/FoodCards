@@ -1,4 +1,4 @@
-package ru.mealcard.controller.utils;
+package ru.mealcard.utils;
 
 import com.sun.net.httpserver.HttpExchange;
 import lombok.Getter;

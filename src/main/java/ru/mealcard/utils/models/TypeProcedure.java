@@ -1,4 +1,4 @@
-package ru.mealcard.models;
+package ru.mealcard.utils.models;
 
 import lombok.AllArgsConstructor;
 

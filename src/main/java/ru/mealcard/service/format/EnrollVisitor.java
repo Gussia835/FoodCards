@@ -1,11 +1,11 @@
-package ru.mealcard.format;
+package ru.mealcard.service.format;
 
 import org.apache.commons.lang3.StringUtils;
 import ru.mealcard.Base;
-import ru.mealcard.format.dto.DataForEnrollDTO;
-import ru.mealcard.format.dto.EnrollDTO;
+import ru.mealcard.service.format.dto.DataForEnrollDTO;
+import ru.mealcard.service.format.dto.EnrollDTO;
 import ru.mealcard.exception.FileGenerationException;
-import ru.mealcard.models.TypeProcedure;
+import ru.mealcard.utils.models.TypeProcedure;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

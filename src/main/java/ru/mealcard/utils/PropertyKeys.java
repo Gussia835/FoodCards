@@ -1,6 +1,5 @@
-package ru.mealcard.config;
+package ru.mealcard.utils;
 
-import lombok.Getter;
 
 public final class PropertyKeys {
     private PropertyKeys() {}

@@ -1,13 +1,13 @@
-package ru.mealcard.service.utils;
+package ru.mealcard.service.validator;
 
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import ru.mealcard.Base;
-import ru.mealcard.format.dto.EnrollDTO;
-import ru.mealcard.controller.dto.GenerateRequestDTO;
-import ru.mealcard.controller.dto.MockRequestDTO;
+import ru.mealcard.service.format.dto.EnrollDTO;
+import ru.mealcard.service.dto.GenerateRequestDTO;
+import ru.mealcard.service.dto.MockRequestDTO;
 import ru.mealcard.exception.InvalidRequestException;
-import ru.mealcard.models.TypeProcedure;
+import ru.mealcard.utils.models.TypeProcedure;
 
 import java.util.regex.Pattern;
 

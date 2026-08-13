@@ -2,8 +2,8 @@ package ru.mealcard.service.mock;
 
 import lombok.Getter;
 import ru.mealcard.Base;
-import ru.mealcard.format.dto.EnrollDTO;
-import ru.mealcard.models.TypeOperation;
+import ru.mealcard.service.format.dto.EnrollDTO;
+import ru.mealcard.utils.models.TypeOperation;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

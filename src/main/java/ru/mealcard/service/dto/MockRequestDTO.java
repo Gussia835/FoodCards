@@ -1,4 +1,4 @@
-package ru.mealcard.controller.dto;
+package ru.mealcard.service.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +13,5 @@ public class MockRequestDTO {
     String nameSystem;
     int rowCount;
     int fileCount;
-
 
 }

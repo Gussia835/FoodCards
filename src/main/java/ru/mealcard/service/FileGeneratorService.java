@@ -1,11 +1,11 @@
 package ru.mealcard.service;
 
 import ru.mealcard.Base;
-import ru.mealcard.format.dto.DataForEnrollDTO;
+import ru.mealcard.service.format.dto.DataForEnrollDTO;
 import ru.mealcard.exception.FileGenerationException;
-import ru.mealcard.format.Visitor;
-import ru.mealcard.models.TypeProcedure;
-import ru.mealcard.service.utils.FilenameGeneratorUtil;
+import ru.mealcard.service.format.Visitor;
+import ru.mealcard.utils.models.TypeProcedure;
+import ru.mealcard.utils.FilenameGeneratorUtil;
 
 import java.io.IOException;
 import java.nio.file.Files;

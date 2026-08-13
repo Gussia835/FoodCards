@@ -1,10 +1,10 @@
-package ru.mealcard.format.dto;
+package ru.mealcard.service.format.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.mealcard.models.TypeOperation;
+import ru.mealcard.utils.models.TypeOperation;
 
 @Getter
 @Setter

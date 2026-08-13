@@ -1,10 +1,10 @@
-package ru.mealcard.controller.dto;
+package ru.mealcard.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.mealcard.format.dto.EnrollDTO;
+import ru.mealcard.service.format.dto.EnrollDTO;
 
 import java.util.List;
 

@@ -1,10 +1,8 @@
 package ru.mealcard.config;
 
 import ru.mealcard.Base;
+import ru.mealcard.utils.PropertyKeys;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.Properties;
@@ -12,25 +10,12 @@ import java.util.Properties;
 public class Config extends Base {
 
     private static final Properties PROPERTIES = new Properties();
+    private static final PropertyLoader PROPERTY_LOADER = PropertyLoader.getInstance();
 
     private static final Config INSTANCE = new Config();
 
-
-
     private Config() {
-        try (InputStream inputStream = Config.class.getResourceAsStream(PropertyKeys.FILE_PROPERTY)) {
-            if (inputStream == null) {
-                error("failed founding property-file");
-                throw new IllegalStateException("not found property file");
-            }
-
-            PROPERTIES.load(inputStream);
-            debug("load property-file");
-
-        } catch (IOException e) {
-            error("failed load config: {}", e);
-            throw new IllegalStateException("Config load failed", e);
-        }
+       PROPERTY_LOADER.load(PROPERTIES);
     }
 
     public static Config getInstance() {

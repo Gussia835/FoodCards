@@ -2,14 +2,14 @@ package ru.mealcard.service.mock;
 
 import lombok.Getter;
 import ru.mealcard.Base;
-import ru.mealcard.format.dto.DataForEnrollDTO;
-import ru.mealcard.controller.dto.MockRequestDTO;
+import ru.mealcard.service.format.dto.DataForEnrollDTO;
+import ru.mealcard.service.dto.MockRequestDTO;
 import ru.mealcard.service.dto.ResponseDTO;
-import ru.mealcard.format.EnrollVisitor;
-import ru.mealcard.format.Visitor;
-import ru.mealcard.models.TypeProcedure;
+import ru.mealcard.service.format.EnrollVisitor;
+import ru.mealcard.service.format.Visitor;
+import ru.mealcard.utils.models.TypeProcedure;
 import ru.mealcard.service.FileGeneratorService;
-import ru.mealcard.service.utils.RequestValidator;
+import ru.mealcard.service.validator.RequestValidator;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

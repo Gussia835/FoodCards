@@ -1,8 +1,8 @@
-package ru.mealcard.format.dto;
+package ru.mealcard.service.format.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import ru.mealcard.models.TypeProcedure;
+import ru.mealcard.utils.models.TypeProcedure;
 
 import java.time.ZonedDateTime;
 

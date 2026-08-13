@@ -1,4 +1,4 @@
-package ru.mealcard.format;
+package ru.mealcard.service.format;
 
 import java.nio.file.Path;
 
