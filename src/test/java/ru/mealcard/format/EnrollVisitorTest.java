@@ -5,11 +5,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import ru.mealcard.exception.FileGenerationException;
-import ru.mealcard.format.dto.DataForEnrollDTO;
-import ru.mealcard.format.dto.EnrollDTO;
-import ru.mealcard.models.TypeOperation;
-import ru.mealcard.models.TypeProcedure;
-import ru.mealcard.service.mock.MockDataService;
+import ru.mealcard.service.format.EnrollVisitor;
+import ru.mealcard.service.format.dto.DataForEnrollDTO;
+import ru.mealcard.service.format.dto.EnrollDTO;
+import ru.mealcard.utils.models.TypeOperation;
+import ru.mealcard.utils.models.TypeProcedure;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,7 +27,6 @@ class EnrollVisitorTest {
     Path tempDir;
 
     private final EnrollVisitor visitor = new EnrollVisitor();
-    private final MockDataService mockData = MockDataService.getInstance();
 
     private final Faker faker = new Faker();
 
@@ -48,6 +47,7 @@ class EnrollVisitorTest {
 
     private String[] lines(Path file) throws Exception {
         String content = Files.readString(file);
+
         assertTrue(content.endsWith("\r\n"));
         return content.split("\r\n", -1);
     }

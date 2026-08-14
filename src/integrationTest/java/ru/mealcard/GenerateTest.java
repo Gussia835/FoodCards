@@ -1,9 +1,14 @@
 package ru.mealcard;
 
 import io.restassured.http.ContentType;
+import net.datafaker.Faker;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import ru.mealcard.service.dto.GenerateRequestDTO;
+import ru.mealcard.service.format.dto.EnrollDTO;
+import ru.mealcard.utils.models.TypeOperation;
 
 import java.nio.file.Path;
 import java.time.ZonedDateTime;
@@ -16,43 +21,41 @@ import static org.hamcrest.Matchers.*;
 
 public class GenerateTest extends IntegrationTest {
 
-    private static String generateValidBody(ZonedDateTime dateTime) {
+    Faker faker = new Faker();
+    GenerateRequestDTO validRequest;
 
-        if (dateTime != null) {
-            return """
-                    {
-                      "bankCode": "001",
-                      "branchCode": "032",
-                      "nameSystem": "GLAER",
-                      "procType": "IN-TIME",
-                      "processAt": "%s",
-                      "cards": [
-                        {"fio": "Иванов Иван Ивнаович", "account": "1111111111111111", "type": "DR", "summ": 1500},
-                        {"fio": "Петров Петр Петрович", "account": "2111111111111111", "type": "ZR", "summ": 1600}
-                      ]
-                    }
-                    """.formatted(dateTime);
-        } else {
-            return """
-                    {
-                      "bankCode": "001",
-                      "branchCode": "032",
-                      "nameSystem": "GLAER",
-                      "procType": "%s",
-                      "cards": [
-                          {"fio": "Иванов Иван Ивнаович", "account": "1111111111111111", "type": "DR", "summ": 1500},
-                          {"fio": "Петров Петр Петрович", "account": "2111111111111111", "type": "ZR", "summ": 1600}
-                      ]
-                    }
-                    """.formatted("IMMEDIATE");
-        }
+
+    @BeforeEach
+    void setUpRequest() {
+        EnrollDTO card1 = new EnrollDTO();
+        card1.setFio(faker.name().fullName());
+        card1.setAccount("1000" + faker.number().digits(12));
+        card1.setType(TypeOperation.DR);
+        card1.setSumm(faker.number().numberBetween(100, 10000));
+
+        EnrollDTO card2 = new EnrollDTO();
+        card2.setFio(faker.name().fullName());
+        card2.setAccount("1000" + faker.number().digits(12));
+        card2.setType(TypeOperation.ZR);
+        card2.setSumm(faker.number().numberBetween(100, 10000));
+
+        validRequest = new GenerateRequestDTO();
+        validRequest.setBankCode("001");
+        validRequest.setBranchCode("032");
+        validRequest.setNameSystem("GLAER");
+        validRequest.setProcType("IMMEDIATE");
+        validRequest.setCards(List.of(card1, card2));
     }
 
     @Test
     void testValidImmediateRequest() {
+        ZonedDateTime futureTime = ZonedDateTime.now().plusHours(2);
+        validRequest.setProcType("IN-TIME");
+        validRequest.setProcessAt(futureTime.toString());
+
         String filename = given()
                 .contentType(ContentType.JSON)
-                .body(generateValidBody(null))
+                .body(validRequest)
 
                 .when()
                 .post("/generate")
@@ -101,7 +104,7 @@ public class GenerateTest extends IntegrationTest {
     void testWrongMethod() {
         given()
                 .contentType(ContentType.JSON)
-                .body(generateValidBody(null))
+                .body(validRequest)
 
                 .when()
                 .get("/generate")

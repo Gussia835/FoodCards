@@ -1,4 +1,4 @@
-package ru.mealcard.models;
+package ru.mealcard.utils.models;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;

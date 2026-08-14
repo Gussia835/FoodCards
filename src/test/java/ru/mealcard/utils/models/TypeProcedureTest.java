@@ -1,14 +1,10 @@
-package ru.mealcard.models;
+package ru.mealcard.utils.models;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import ru.mealcard.utils.models.TypeProcedure;
-
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class TypeProcedureTest {
+class TypeProcedureTest {
 
     @ParameterizedTest
     @CsvSource({"IN-TIME", "IMMEDIATE"})

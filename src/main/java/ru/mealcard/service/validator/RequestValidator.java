@@ -15,7 +15,7 @@ public class RequestValidator extends Base {
 
     private static final Pattern CODE_PATTERN = Pattern.compile("\\d{1,3}");
     private static final Pattern AES_PATTERN = Pattern.compile("[A-Za-z0-9_]{1,12}");
-    private static final Pattern ACCOUNT_PATTERN = Pattern.compile("\\d{16}");
+    private static final Pattern ACCOUNT_PATTERN = Pattern.compile("[1-9]\\d{15}");
 
     @Getter
     private final static RequestValidator instance = new RequestValidator();

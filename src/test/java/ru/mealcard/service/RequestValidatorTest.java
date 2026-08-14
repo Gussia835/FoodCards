@@ -5,12 +5,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import ru.mealcard.format.dto.EnrollDTO;
-import ru.mealcard.controller.dto.GenerateRequestDTO;
-import ru.mealcard.controller.dto.MockRequestDTO;
+import ru.mealcard.service.format.dto.EnrollDTO;
+import ru.mealcard.service.dto.GenerateRequestDTO;
+import ru.mealcard.service.dto.MockRequestDTO;
 import ru.mealcard.exception.InvalidRequestException;
-import ru.mealcard.models.TypeOperation;
-import ru.mealcard.service.utils.RequestValidator;
+import ru.mealcard.utils.models.TypeOperation;
+import ru.mealcard.service.validator.RequestValidator;
 
 import java.util.List;
 
