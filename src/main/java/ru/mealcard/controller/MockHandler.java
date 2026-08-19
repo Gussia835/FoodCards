@@ -3,6 +3,7 @@ package ru.mealcard.controller;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import ru.mealcard.Base;
+import ru.mealcard.service.dto.ResponseDTO;
 import ru.mealcard.utils.RequestConverterUtil;
 import ru.mealcard.service.dto.MockRequestDTO;
 import ru.mealcard.exception.FileGenerationException;
@@ -17,18 +18,18 @@ import java.util.concurrent.RejectedExecutionException;
 public class MockHandler extends Base implements HttpHandler {
 
     private final MockService service = MockService.getInstance();
-    private final ResponseService responses = ResponseService.getInstance();
+    private final ResponseService responseService = ResponseService.getInstance();
     private final ExecutorService executorService;
 
     public MockHandler(ExecutorService executorService) {
+
         this.executorService = executorService;
     }
 
     @Override
     public void handle(HttpExchange exchange) {
         if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
-            responses.sendError(exchange, HttpURLConnection.HTTP_BAD_METHOD, "Method not allowed");
-            exchange.close();
+            responseService.sendError(exchange, HttpURLConnection.HTTP_BAD_METHOD, "Method not allowed");
             return;
         }
 
@@ -36,26 +37,23 @@ public class MockHandler extends Base implements HttpHandler {
             executorService.submit(() -> process(exchange));
         } catch (RejectedExecutionException e) {
             error("Thread pool rejected task: {}", e.getMessage());
-            responses.sendError(exchange, HttpURLConnection.HTTP_UNAVAILABLE, "Server busy");
-            exchange.close();
+            responseService.sendError(exchange, HttpURLConnection.HTTP_UNAVAILABLE, "Server busy");
         }
     }
 
     private void process(HttpExchange exchange) {
         try {
             MockRequestDTO requestDTO = RequestConverterUtil.parseBody(exchange, MockRequestDTO.class);
-            var response = service.process(requestDTO);
-            responses.sendJson(exchange, HttpURLConnection.HTTP_OK, response);
+            ResponseDTO response = service.process(requestDTO);
+            responseService.sendJson(exchange, HttpURLConnection.HTTP_OK, response);
         } catch (InvalidRequestException e) {
-            responses.sendError(exchange, HttpURLConnection.HTTP_BAD_REQUEST, e.getMessage());
+            responseService.sendError(exchange, HttpURLConnection.HTTP_BAD_REQUEST, e.getMessage());
         } catch (FileGenerationException e) {
             error("File generation failed: {}", e.getMessage(), e);
-            responses.sendError(exchange, HttpURLConnection.HTTP_INTERNAL_ERROR, "Generation failed");
+            responseService.sendError(exchange, HttpURLConnection.HTTP_INTERNAL_ERROR, "Generation failed");
         } catch (Exception e) {
             error("Unexpected error: {}", e.getMessage(), e);
-            responses.sendError(exchange, HttpURLConnection.HTTP_INTERNAL_ERROR, "Internal server error");
-        } finally {
-            exchange.close();
+            responseService.sendError(exchange, HttpURLConnection.HTTP_INTERNAL_ERROR, "Internal server error");
         }
     }
 }
