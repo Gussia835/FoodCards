@@ -1,7 +1,7 @@
 package ru.mealcard.exception;
 
 public class SendException extends RuntimeException {
-  public SendException(String message) {
-    super(message);
-  }
+    public SendException(String message) {
+        super(message);
+    }
 }

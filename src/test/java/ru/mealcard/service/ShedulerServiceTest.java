@@ -47,8 +47,10 @@ public class ShedulerServiceTest {
     void testMultipleTasksScheduledIndependently() throws Exception {
         AtomicBoolean first = new AtomicBoolean(false);
         AtomicBoolean second = new AtomicBoolean(false);
+
         scheduler.shedule(LocalDateTime.now(ZoneId.of("Europe/Moscow")), () -> first.set(true));
         scheduler.shedule(LocalDateTime.now(ZoneId.of("Europe/Moscow")), () -> second.set(true));
+
         await().atMost(2, SECONDS).untilTrue(first);
         await().atMost(2, SECONDS).untilTrue(second);
     }

@@ -1,4 +1,36 @@
 package ru.mealcard.utils.sendModels;
 
-public class SenderRegistry {
+import lombok.Getter;
+import ru.mealcard.Base;
+import ru.mealcard.config.Config;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class SenderFabric extends Base {
+
+    @Getter
+    private static final SenderFabric instance = new SenderFabric();
+
+    private final Map<TypeSend, Sender> senders = new HashMap<>();
+
+    private SenderFabric() {
+        Config config = Config.getInstance();
+
+        createSender(TypeSend.MULTIPART, new MultipartSender(config.getSendUrl()));
+        createSender(TypeSend.CHUNK, new ChunkSender(config.getSendUrl()));
+        createSender(TypeSend.GRPC, new GrpcSender(config.getGrpcHost(), config.getGrpcPort(), config.getChunkSize()));
+    }
+
+    private void createSender(TypeSend type, Sender sender) {
+        senders.put(type, sender);
+    }
+
+    public Sender get(TypeSend type) {
+        Sender sender = senders.get(type);
+        if (sender == null) {
+            throw new IllegalArgumentException("Unknown sender type: " + type);
+        }
+        return sender;
+    }
 }

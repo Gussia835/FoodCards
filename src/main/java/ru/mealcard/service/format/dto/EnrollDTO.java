@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.mealcard.utils.models.TypeOperation;
+import ru.mealcard.utils.sendModels.TypeOperation;
 
 @Getter
 @Setter

@@ -5,7 +5,7 @@ import ru.mealcard.Base;
 import ru.mealcard.service.format.dto.DataForEnrollDTO;
 import ru.mealcard.service.format.dto.EnrollDTO;
 import ru.mealcard.exception.FileGenerationException;
-import ru.mealcard.utils.models.TypeProcedure;
+import ru.mealcard.utils.sendModels.TypeProcedure;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

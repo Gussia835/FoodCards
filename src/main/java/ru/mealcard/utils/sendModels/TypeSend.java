@@ -1,5 +1,6 @@
-package ru.mealcard.utils.models;
+package ru.mealcard.utils.sendModels;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 
 public enum TypeSend {
@@ -15,6 +16,7 @@ public enum TypeSend {
         this.code = code;
     }
 
+    @JsonCreator
     public static TypeSend fromCode(String s) {
         for (TypeSend t : values()) {
             if (t.code.equalsIgnoreCase(s)) {

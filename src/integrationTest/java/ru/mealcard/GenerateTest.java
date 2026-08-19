@@ -8,7 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import ru.mealcard.service.dto.GenerateRequestDTO;
 import ru.mealcard.service.format.dto.EnrollDTO;
-import ru.mealcard.utils.models.TypeOperation;
+import ru.mealcard.utils.sendModels.TypeOperation;
 
 import java.nio.file.Path;
 import java.time.ZonedDateTime;

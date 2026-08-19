@@ -8,8 +8,8 @@ import ru.mealcard.exception.FileGenerationException;
 import ru.mealcard.service.format.EnrollVisitor;
 import ru.mealcard.service.format.dto.DataForEnrollDTO;
 import ru.mealcard.service.format.dto.EnrollDTO;
-import ru.mealcard.utils.models.TypeOperation;
-import ru.mealcard.utils.models.TypeProcedure;
+import ru.mealcard.utils.sendModels.TypeOperation;
+import ru.mealcard.utils.sendModels.TypeProcedure;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

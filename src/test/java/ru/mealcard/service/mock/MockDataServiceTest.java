@@ -32,7 +32,7 @@ public class MockDataServiceTest {
     }
 
     @Test
-    void testAccountIsValid16DigitsWithPrefix() {
+    void testAccountIsValid() {
         assertThat(record.getAccount()).matches("[1-9]\\d{15}");
     }
 
@@ -78,6 +78,7 @@ public class MockDataServiceTest {
         for (int i = 0; i < 100; i++) {
             EnrollDTO r = service.generateRecords(1).iterator().next();
             String code = r.getType().getCode();
+
             assertThat(code).isIn("DR", "CR", "ZR");
         }
     }

@@ -7,7 +7,7 @@ import ru.mealcard.service.dto.GenerateRequestDTO;
 import ru.mealcard.service.dto.ResponseDTO;
 import ru.mealcard.service.format.EnrollVisitor;
 import ru.mealcard.service.format.Visitor;
-import ru.mealcard.utils.models.TypeProcedure;
+import ru.mealcard.utils.sendModels.TypeProcedure;
 import ru.mealcard.service.FileGeneratorService;
 import ru.mealcard.service.validator.RequestValidator;
 
