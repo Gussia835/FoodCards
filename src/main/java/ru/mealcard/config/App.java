@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.mealcard.controller.GenerateHandler;
 import ru.mealcard.controller.MockHandler;
+import ru.mealcard.controller.SendHandler;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -25,8 +26,11 @@ public class App {
         
         try {
             server = HttpServer.create(new InetSocketAddress(config.getPort()), 0);
+
             server.createContext("/generate", new GenerateHandler(executor));
             server.createContext("/mock", new MockHandler(executor));
+            server.createContext("/send", new SendHandler(executor));
+
             server.setExecutor(executor);
             server.start();
         } catch (IOException e) {
