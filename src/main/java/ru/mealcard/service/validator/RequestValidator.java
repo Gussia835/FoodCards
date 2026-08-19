@@ -7,7 +7,8 @@ import ru.mealcard.service.format.dto.EnrollDTO;
 import ru.mealcard.service.dto.GenerateRequestDTO;
 import ru.mealcard.service.dto.MockRequestDTO;
 import ru.mealcard.exception.InvalidRequestException;
-import ru.mealcard.utils.models.TypeProcedure;
+import ru.mealcard.service.send.dto.SendRequestDTO;
+import ru.mealcard.utils.sendModels.TypeProcedure;
 
 import java.util.regex.Pattern;
 
@@ -23,7 +24,6 @@ public class RequestValidator extends Base {
     private RequestValidator() {
 
     }
-
 
 
     public void validateMock(MockRequestDTO req) {
@@ -84,6 +84,18 @@ public class RequestValidator extends Base {
         }
         if (c.getSumm() < 0) {
             throw new InvalidRequestException("sum cannot be negative");
+        }
+    }
+
+    public void validateSend(SendRequestDTO req) {
+        if (req == null) {
+            throw new InvalidRequestException("Request cannot be null");
+        }
+        if (StringUtils.isBlank(req.getFilename())) {
+            throw new InvalidRequestException("filename is required");
+        }
+        if (req.getTypeSend() == null) {
+            throw new InvalidRequestException("typeSend is required");
         }
     }
 }
