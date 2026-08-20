@@ -1,4 +1,4 @@
-package ru.mealcard.utils.sendModels;
+package ru.mealcard.utils.send_models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;

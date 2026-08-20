@@ -1,4 +1,4 @@
-package ru.mealcard.utils.format;
+package ru.mealcard.utils.encoding.format;
 
 import lombok.Getter;
 import ru.mealcard.utils.encoding.FileEncoding;

@@ -1,8 +1,11 @@
-package ru.mealcard.utils.sendModels;
+package ru.mealcard.utils.send_models;
 
 import lombok.Getter;
 import ru.mealcard.Base;
 import ru.mealcard.config.Config;
+import ru.mealcard.service.send.Impl.ChunkSender;
+import ru.mealcard.service.send.Impl.GrpcSender;
+import ru.mealcard.service.send.Impl.MultipartSender;
 
 import java.util.HashMap;
 import java.util.Map;

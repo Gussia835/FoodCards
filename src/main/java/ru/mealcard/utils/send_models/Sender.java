@@ -1,4 +1,4 @@
-package ru.mealcard.utils.sendModels;
+package ru.mealcard.utils.send_models;
 
 import java.nio.file.Path;
 import java.util.Map;

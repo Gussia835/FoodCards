@@ -1,4 +1,4 @@
-package ru.mealcard.utils.sendModels;
+package ru.mealcard.utils.generate_models;
 
 import lombok.AllArgsConstructor;
 
