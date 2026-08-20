@@ -9,7 +9,7 @@ import ru.mealcard.service.format.dto.EnrollDTO;
 import ru.mealcard.service.dto.GenerateRequestDTO;
 import ru.mealcard.service.dto.MockRequestDTO;
 import ru.mealcard.exception.InvalidRequestException;
-import ru.mealcard.utils.sendModels.TypeOperation;
+import ru.mealcard.utils.generate_models.TypeOperation;
 import ru.mealcard.service.validator.RequestValidator;
 
 import java.util.List;

@@ -1,7 +1,9 @@
-package ru.mealcard.utils.sendModels;
+package ru.mealcard.utils.send_models;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import ru.mealcard.utils.generate_models.TypeProcedure;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TypeProcedureTest {

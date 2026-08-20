@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import ru.mealcard.config.Config;
+import ru.mealcard.utils.filename.FilenameGeneratorUtil;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
