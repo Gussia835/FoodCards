@@ -2,6 +2,7 @@ package ru.mealcard.config;
 
 import lombok.Getter;
 import ru.mealcard.Base;
+import ru.mealcard.exception.ConfigurationException;
 import ru.mealcard.utils.config.PropertyKeys;
 
 import java.io.IOException;
@@ -16,22 +17,26 @@ public class PropertyLoader extends Base {
   @Getter
   private static final PropertyLoader instance = new PropertyLoader();
 
-    private static final String EXTERNAL_FILE = "app.properties";
+    private static final String EXTERNAL_FILE = "app.config";
     private static final String CLASSPATH_FILE = PropertyKeys.FILE_PROPERTY;
 
     private PropertyLoader() {}
 
 
     public void load(Properties target) {
-        Path external = Paths.get(EXTERNAL_FILE);
+        String external_path = System.getProperty(EXTERNAL_FILE);
 
-        if (Files.exists(external)) {
-            try (InputStream in = Files.newInputStream(external)) {
-                target.load(in);
-                info("Loaded config from external file: {}", external.toAbsolutePath());
-                return;
-            } catch (IOException e) {
-                warn("Failed to read external config, falling back to classpath: {}", e.getMessage());
+        if (external_path != null && !external_path.trim().isBlank()) {
+            Path external = Paths.get(external_path);
+
+            if (Files.exists(external)) {
+                try (InputStream in = Files.newInputStream(external)) {
+                    target.load(in);
+                    info("Loaded config from external file: {}", external.toAbsolutePath());
+                    return;
+                } catch (IOException e) {
+                    warn("Failed to read external config, falling back to classpath: {}", e.getMessage());
+                }
             }
         }
 

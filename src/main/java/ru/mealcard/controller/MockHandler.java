@@ -4,7 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import ru.mealcard.Base;
 import ru.mealcard.service.dto.ResponseDTO;
-import ru.mealcard.utils.RequestConverterUtil;
+import ru.mealcard.utils.request.RequestConverterUtil;
 import ru.mealcard.service.dto.MockRequestDTO;
 import ru.mealcard.exception.FileGenerationException;
 import ru.mealcard.exception.InvalidRequestException;

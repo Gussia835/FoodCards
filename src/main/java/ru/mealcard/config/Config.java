@@ -2,10 +2,12 @@ package ru.mealcard.config;
 
 import ru.mealcard.Base;
 import ru.mealcard.utils.config.PropertyKeys;
+import ru.mealcard.utils.encoding.FileEncoding;
 
 import java.nio.charset.Charset;
 import java.nio.file.Path;
-import java.util.Properties;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Config extends Base {
 
@@ -37,9 +39,6 @@ public class Config extends Base {
         return get(PropertyKeys.ZONE_KEY, "Europe/Moscow");
     }
 
-    public Charset getCharset() {
-        return Charset.forName(get(PropertyKeys.CHARSET_KEY, "UTF-8"));
-    }
 
     public Path getOutputDir() {
         return Path.of(get(PropertyKeys.OUTPUT_DIR_KEY, "./out/cards"));

@@ -3,6 +3,7 @@ package ru.mealcard.config;
 import com.sun.net.httpserver.HttpServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.mealcard.controller.ErrorHandler;
 import ru.mealcard.controller.GenerateHandler;
 import ru.mealcard.controller.MockHandler;
 import ru.mealcard.controller.SendHandler;
@@ -30,6 +31,7 @@ public class App {
             server.createContext("/generate", new GenerateHandler(executor));
             server.createContext("/mock", new MockHandler(executor));
             server.createContext("/send", new SendHandler(executor));
+            server.createContext("/error", new ErrorHandler(executor));
 
             server.setExecutor(executor);
             server.start();

@@ -10,7 +10,7 @@ import ru.mealcard.service.ResponseService;
 import ru.mealcard.service.dto.ResponseDTO;
 import ru.mealcard.service.send.SendService;
 import ru.mealcard.service.send.dto.SendRequestDTO;
-import ru.mealcard.utils.RequestConverterUtil;
+import ru.mealcard.utils.request.RequestConverterUtil;
 
 import java.net.HttpURLConnection;
 import java.util.concurrent.ExecutorService;
