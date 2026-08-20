@@ -3,12 +3,13 @@ package ru.mealcard.service.validator;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import ru.mealcard.Base;
+import ru.mealcard.service.dto.RequestErrorDTO;
 import ru.mealcard.service.format.dto.EnrollDTO;
 import ru.mealcard.service.dto.GenerateRequestDTO;
 import ru.mealcard.service.dto.MockRequestDTO;
 import ru.mealcard.exception.InvalidRequestException;
 import ru.mealcard.service.send.dto.SendRequestDTO;
-import ru.mealcard.utils.sendModels.TypeProcedure;
+import ru.mealcard.utils.generate_models.TypeProcedure;
 
 import java.util.regex.Pattern;
 
@@ -63,6 +64,19 @@ public class RequestValidator extends Base {
         }
     }
 
+    public void validateError(RequestErrorDTO req) {
+        if (req == null)
+            throw new InvalidRequestException("Request cannot be null");
+        if (req.getBankCode() == null || req.getBankCode().isBlank())
+            throw new InvalidRequestException("bankCode is required");
+        if (req.getBranchCode() == null || req.getBranchCode().isBlank())
+            throw new InvalidRequestException("branchCode is required");
+        if (req.getNameSystem() == null || req.getNameSystem().isBlank())
+            throw new InvalidRequestException("nameSystem is required");
+        if (req.getErrorType() == null)
+            throw new InvalidRequestException("errorType is required");
+    }
+
     private void validateCommonFields(String bank, String branch, String aes) {
         if (StringUtils.isBlank(bank) || !CODE_PATTERN.matcher(bank).matches()) {
             throw new InvalidRequestException("bankCode must be 1..3 digits");
@@ -98,4 +112,6 @@ public class RequestValidator extends Base {
             throw new InvalidRequestException("typeSend is required");
         }
     }
+
+
 }

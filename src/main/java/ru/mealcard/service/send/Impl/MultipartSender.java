@@ -1,4 +1,4 @@
-package ru.mealcard.utils.sendModels;
+package ru.mealcard.service.send.Impl;
 
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
@@ -8,6 +8,7 @@ import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.ContentType;
 import ru.mealcard.Base;
 import ru.mealcard.exception.SendException;
+import ru.mealcard.utils.send_models.Sender;
 
 import java.io.IOException;
 import java.nio.file.Files;

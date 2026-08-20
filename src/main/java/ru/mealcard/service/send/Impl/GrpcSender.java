@@ -1,4 +1,4 @@
-package ru.mealcard.utils.sendModels;
+package ru.mealcard.service.send.Impl;
 
 import com.google.protobuf.ByteString;
 import io.grpc.ManagedChannel;
@@ -9,6 +9,7 @@ import proto.FileTransportGrpc;
 import proto.UploadResponse;
 import ru.mealcard.Base;
 import ru.mealcard.exception.SendException;
+import ru.mealcard.utils.send_models.Sender;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;

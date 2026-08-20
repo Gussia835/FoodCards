@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.mealcard.utils.sendModels.TypeSend;
+import ru.mealcard.utils.send_models.TypeSend;
 
 import java.util.Map;
 

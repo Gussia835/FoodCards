@@ -2,7 +2,7 @@ package ru.mealcard.service.format.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import ru.mealcard.utils.sendModels.TypeProcedure;
+import ru.mealcard.utils.generate_models.TypeProcedure;
 
 import java.time.ZonedDateTime;
 

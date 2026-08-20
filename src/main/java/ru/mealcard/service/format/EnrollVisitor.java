@@ -5,10 +5,12 @@ import ru.mealcard.Base;
 import ru.mealcard.service.format.dto.DataForEnrollDTO;
 import ru.mealcard.service.format.dto.EnrollDTO;
 import ru.mealcard.exception.FileGenerationException;
-import ru.mealcard.utils.sendModels.TypeProcedure;
+import ru.mealcard.utils.encoding.FileEncoding;
+import ru.mealcard.utils.generate_models.TypeProcedure;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.format.DateTimeFormatter;
@@ -25,11 +27,16 @@ public class EnrollVisitor extends Base implements Visitor<DataForEnrollDTO> {
     private static final int TYPE_LEN = 2;
 
     @Override
+    public Charset getCharset() {
+        return FileEncoding.WINDOWS_1251.getCharset();
+    }
+
+    @Override
     public void visit(Path targetFile, DataForEnrollDTO dto) {
         info("Writing ENROLL file: {}", targetFile.getFileName());
 
         int recordCount = 0;
-        try (BufferedWriter writer = Files.newBufferedWriter(targetFile, getConfig().getCharset())) {
+        try (BufferedWriter writer = Files.newBufferedWriter(targetFile, getCharset())) {
             writeHeader(writer, dto);
 
             for (EnrollDTO record : dto.getRecords()) {
