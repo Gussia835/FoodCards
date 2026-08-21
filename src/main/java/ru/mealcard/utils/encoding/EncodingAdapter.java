@@ -34,15 +34,11 @@ public class EncodingAdapter extends Base {
         UniversalEncodingDetector detector = new UniversalEncodingDetector();
         Metadata metadata = new Metadata();
 
-        try {
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
 
-            Charset charset = detector.detect(byteArrayInputStream, metadata);
-            return charset != null ? charset.name() : null;
-        } catch (IOException e) {
-            error("cant detect charset");
-            return null;
-        }
+        Charset charset = detector.detect(byteArrayInputStream, metadata);
+        return charset != null ? charset.name() : null;
+
     }
 
 }

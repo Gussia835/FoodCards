@@ -28,14 +28,11 @@ public enum FileEncoding {
         this.charset = charset;
     }
 
+    @JsonCreator
     public static FileEncoding fromName(String s) {
         for (FileEncoding e : values())
             if (e.name.equalsIgnoreCase(s)) return e;
         throw new IllegalArgumentException("Unknown encoding: " + s);
     }
 
-    @JsonCreator
-    public static FileEncoding fromCode(String s) {
-        return fromName(s);
-    }
 }

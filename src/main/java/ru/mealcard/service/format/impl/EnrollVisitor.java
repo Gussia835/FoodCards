@@ -1,7 +1,8 @@
-package ru.mealcard.service.format;
+package ru.mealcard.service.format.impl;
 
 import org.apache.commons.lang3.StringUtils;
 import ru.mealcard.Base;
+import ru.mealcard.utils.format.Visitor;
 import ru.mealcard.service.format.dto.DataForEnrollDTO;
 import ru.mealcard.service.format.dto.EnrollDTO;
 import ru.mealcard.exception.FileGenerationException;

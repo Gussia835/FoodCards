@@ -3,7 +3,7 @@ package ru.mealcard.service;
 import ru.mealcard.Base;
 import ru.mealcard.service.format.dto.DataForEnrollDTO;
 import ru.mealcard.exception.FileGenerationException;
-import ru.mealcard.service.format.Visitor;
+import ru.mealcard.utils.format.Visitor;
 import ru.mealcard.utils.generate_models.TypeProcedure;
 import ru.mealcard.utils.filename.FilenameGeneratorUtil;
 

@@ -17,13 +17,10 @@ public enum ErrorType {
     private final FileEncoding encoding;
 
     ErrorType(FileEncoding encoding) {
+
+
         this.encoding = encoding;
     }
 
-    @JsonCreator
-    public static ErrorType fromCode(String s) {
-        for (ErrorType t : values())
-            if (t.name().equalsIgnoreCase(s)) return t;
-        throw new IllegalArgumentException("Unknown error type: " + s);
-    }
+
 }
