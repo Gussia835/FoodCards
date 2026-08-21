@@ -193,6 +193,21 @@
 }
 ```
 
+## Run app
+
+```bash
+# Сборка
+./gradlew clean build
+
+# Запуск с внешними конфигами
+java -Dgenerator.file.config=/path/to/app.properties \
+     -Dlogback.configurationFile=/path/to/logback.xml \
+     -jar build/libs/mealcard-generator.jar
+
+# Запуск с внутренними конфигами
+java -jar build/libs/mealcard-generator.jar
+```
+
 **Автор**
 Федотов Дмитрий
 git: https://github.com/Gussia835
