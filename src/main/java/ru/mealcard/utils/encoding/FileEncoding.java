@@ -11,10 +11,8 @@ import java.util.Set;
 public enum FileEncoding {
     UTF_8("UTF-8", StandardCharsets.UTF_8),
     UTF_16("UTF-16",StandardCharsets.UTF_16),
-    WINDOWS_1251("Windows-1251",Charset.forName("windows-1251")),
-    KOI8_R("KOI8-R", Charset.forName("KOI8-R"));
-
-    public static final Set<FileEncoding> ALLOWED_ENCODINGS = EnumSet.of(UTF_8, UTF_16, WINDOWS_1251, KOI8_R);
+    WINDOWS_1251("Windows-1251",Charset.forName("windows-1251")),;
+    public static final Set<FileEncoding> ALLOWED_ENCODINGS = EnumSet.of(UTF_8, UTF_16, WINDOWS_1251);
 
 
     @Getter

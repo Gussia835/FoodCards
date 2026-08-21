@@ -3,12 +3,15 @@ package ru.mealcard.service.error;
 import lombok.Getter;
 import ru.mealcard.Base;
 import ru.mealcard.controller.ErrorHandler;
+import ru.mealcard.exception.FileGenerationException;
 import ru.mealcard.service.dto.RequestErrorDTO;
 import ru.mealcard.service.format.dto.EnrollDTO;
 import ru.mealcard.service.mock.MockDataService;
 import ru.mealcard.utils.filename.FilenameGeneratorUtil;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class ErrorService extends Base {
@@ -39,6 +42,12 @@ public class ErrorService extends Base {
 
         Path filepath = getConfig().getOutputDir().resolve(filename);
 
+        try {
+            Files.createDirectories(filepath.getParent());
+        } catch (IOException e) {
+            throw new FileGenerationException("Cannot create directory: " + filepath.getParent());
+        }
+
         switch (requestDTO.getErrorType()) {
             case EMPTY, SPACES, NEWLINES -> {
                 int lineCounts = requestDTO.getLineCount();
@@ -46,7 +55,7 @@ public class ErrorService extends Base {
                 corruptor.writeStructural(filepath, requestDTO.getErrorType(), lineCounts);
             }
 
-            case UTF_16, WINDOWS_1251, KOI8_R -> {
+            case UTF_16, WINDOWS_1251 -> {
                 String content = buildFakerContent(requestDTO);
                 corruptor.writeWithEncoding(filepath, content, requestDTO.getErrorType());
             }

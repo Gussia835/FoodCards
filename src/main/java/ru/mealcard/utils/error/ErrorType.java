@@ -10,8 +10,7 @@ public enum ErrorType {
     NEWLINES(null),
 
     UTF_16(FileEncoding.UTF_16),
-    WINDOWS_1251(FileEncoding.WINDOWS_1251),
-    KOI8_R(FileEncoding.KOI8_R);
+    WINDOWS_1251(FileEncoding.WINDOWS_1251);
 
     @Getter
     private final FileEncoding encoding;

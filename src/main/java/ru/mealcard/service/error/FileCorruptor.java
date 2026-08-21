@@ -24,7 +24,7 @@ public class FileCorruptor extends Base {
 
     public void writeWithEncoding(Path file, String content, ErrorType type) {
         try {
-            FileEncoding enc = FileEncoding.fromName(type.name());
+            FileEncoding enc = type.getEncoding();
             Files.writeString(file, content, enc.getCharset());
 
             info("Corrupted file written (encoding): {} ({})", file.getFileName(), type);
