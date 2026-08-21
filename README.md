@@ -7,6 +7,7 @@
 <details>
   <summary>📂 Нажмите, чтобы посмотреть структуру папок</summary>
 
+```text
   ru.mealcard/
   ├── config/
   │   ├── App
@@ -101,7 +102,7 @@
   │   │   ├── SenderFabric
   |   |   ├── TypeSend
   │   
-
+```
 </details>
 
 ## technology
